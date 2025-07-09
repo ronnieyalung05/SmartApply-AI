@@ -1,0 +1,87 @@
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  /* overflow: hidden; prevent scrollbars */
+  background: #1a1a1a;
+  color: #f3f4f6;
+}
+
+#app-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* CHANGED: Made header smaller and used only one color with simple border */
+#app-name {
+  text-align: center;
+  font-size: 18px; /* reduced from 24px */
+  font-weight: bold;
+  padding: 0.5rem; /* reduced from 1rem */
+  flex-shrink: 0;
+  background: #2b2b2b; /* unified color scheme */
+  color: #f3f4f6; /* match main text color */
+  margin-left: 10px;
+  margin-right: 10px;
+  border-radius: 10px;
+  /*border-bottom: 1px solid #2b2b2b; /* simple single border */
+}
+
+/* CHANGED: Reduced padding between title and content */
+#app-layout {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  padding: 0.5rem; /* reduced from 1rem */
+  gap: 2rem;
+}
+
+#preferences-section,
+#descriptions-section {
+  flex: 1;
+  overflow-y: auto;
+  max-height: 100%;
+}
+
+/* CHANGED: Removed scrolling since it should fit without scrolling now */
+#preferences-section {
+  flex: 1;
+  max-width: 300px;
+  background: #2b2b2b; /* unified with header color */
+  padding: 0.8rem; /* slightly reduced from 1rem */
+  border-radius: 8px;
+  overflow-y: visible; /* removed scroll since it should fit */
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; /* added gap to space elements properly */
+}
+
+/* CHANGED: Removed scroll-related styles since we removed scrolling */
+#descriptions-section {
+  flex: 2;
+  background: #2b2b2b; /* unified color scheme - slightly lighter than preferences */
+  padding: 1rem;
+  border-radius: 8px;
+  color: #f3f4f6;
+  position: relative; /* for positioning child elements */
+}
+
+/* CHANGED: Added new container for description content positioned at bottom left */
+#descriptions-content {
+  position: relative;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.job-description-form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  width: 100%;
+  max-width: 50vw; /* 👈 Matches textarea’s max-width */
+}

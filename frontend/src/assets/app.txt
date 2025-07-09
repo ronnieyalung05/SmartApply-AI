@@ -1,0 +1,59 @@
+import { useState } from 'react'
+
+import './App.css'
+
+function App() {
+  const [input, setInput] = useState("");
+  const [aiResponse, setAiResponse] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setLoading(true);
+    setAiResponse("");
+
+    const backend_server = import.meta.env.VITE_BACKEND_SERVER;
+
+    try {
+      const res = await fetch(backend_server, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt: input }),
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        setAiResponse(data.response);
+      } else {
+        setAiResponse("Error: " + (data.error || "Unknown error"));
+      }
+    } catch (error) {
+      setAiResponse("Fetch error: " + error.message);
+    }
+
+    setLoading(false);
+  }
+
+  return (
+    <div style={{ margin: "2rem" }}>
+      <h1>AI Prompt Test</h1>
+      <form onSubmit={handleSubmit}>
+        <textarea
+          rows={5}
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="Enter your prompt here"
+          style={{ width: "100%" }}
+        />
+        <button type="submit" disabled={loading} style={{ marginTop: "1rem" }}>
+          {loading ? "Loading..." : "Generate"}
+        </button>
+      </form>
+      <div style={{ marginTop: "2rem", whiteSpace: "pre-wrap" }}>
+        {aiResponse}
+      </div>
+    </div>
+  );
+}
+
+export default App;

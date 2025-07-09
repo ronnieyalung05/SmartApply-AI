@@ -1,0 +1,205 @@
+/* Main container for the resume component */
+.add-resume-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+  width: 100%;
+}
+
+/* Add Resume Button - shown when no file is uploaded */
+.add-resume-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: #3b82f6;
+  color: #f9fafb;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.add-resume-button:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.add-resume-button:active {
+  background: #1d4ed8;
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Icon inside the button */
+.button-icon {
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+}
+
+/* Container for uploaded file display */
+.uploaded-file-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: #374151;
+  border: 2px solid #4b5563;
+  border-radius: 8px;
+  max-width: 400px;
+  width: 80%;
+  transition: all 0.2s ease;
+}
+
+.uploaded-file-container:hover {
+  background: #4b5563;
+  border-color: #6b7280;
+}
+
+/* File information section */
+.file-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+/* File icon */
+.file-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: #4b5563;
+  border-radius: 6px;
+}
+
+/* File details container */
+.file-details {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* File name */
+.file-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #f9fafb;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+
+/* File metadata container */
+.file-metadata {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+/* File type and size */
+.file-type,
+.file-size {
+  font-size: 12px;
+  color: #9ca3af;
+  white-space: nowrap;
+}
+
+.file-type {
+  font-weight: 500;
+}
+
+/* Remove file button */
+.remove-file-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: #ef4444;
+  color: #f9fafb;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.remove-file-button:hover {
+  background: #dc2626;
+  transform: scale(1.05);
+}
+
+.remove-file-button:active {
+  background: #b91c1c;
+  transform: scale(0.95);
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+  .add-resume-container {
+    margin: 16px 0;
+  }
+
+  .uploaded-file-container {
+    max-width: 100%;
+    padding: 12px;
+  }
+
+  .file-info {
+    gap: 8px;
+  }
+
+  .file-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 20px;
+  }
+
+  .file-name {
+    font-size: 13px;
+  }
+
+  .file-metadata {
+    gap: 8px;
+  }
+
+  .file-type,
+  .file-size {
+    font-size: 11px;
+  }
+
+  .remove-file-button {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+}
+
+/* Loading state (optional - for future use) */
+.add-resume-button:disabled {
+  background: #6b7280;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.add-resume-button:disabled:hover {
+  background: #6b7280;
+  transform: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}

@@ -1,0 +1,227 @@
+.job-preferences-form {
+  max-width: 40vh;
+  margin: 0 auto;
+  background: #2b2b2b;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  border: 1px solid #1f1f1f;
+}
+
+.job-preferences-form-title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 600;
+  color: #e5e7eb;
+  margin-top: 0px;
+  margin-bottom: 5px;
+}
+
+.job-preferences-title-separator {
+  width: 100%;
+  height: 1px;
+  background: #4b5563;
+  margin-bottom: 8px;
+}
+
+.job-preferences-form-section {
+  margin-bottom: 0%;
+}
+
+.job-preferences-section-label {
+  display: block;
+  font-size: 16px;
+  font-weight: 700;
+  color: #d1d5db;
+  margin-bottom: 8px;
+  margin-top: 10px;
+  text-align: left;
+}
+
+.job-preferences-pay-range-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  max-width: 100%;
+}
+
+.job-preferences-pay-input-group {
+  display: flex;
+  align-items: center;
+  position: relative;
+  flex: 1;
+  max-width: 100%;
+}
+
+.pay-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 2px solid #4b5563;
+  border-radius: 8px;
+  font-size: 16px;
+  color: #f3f4f6;
+  background: #374151;
+  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+}
+
+.pay-input:focus {
+  outline: none;
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+}
+
+.pay-input::placeholder {
+  color: #9ca3af;
+}
+
+.job-preferences-range-separator {
+  font-size: 14px;
+  color: #9ca3af;
+  font-weight: 500;
+}
+
+.job-preferences-error-message {
+  color: #f87171;
+  font-size: 14px;
+  margin-top: 6px;
+  font-weight: 500;
+}
+
+.job-preferences-checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.job-preferences-checkbox-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 3px 0;
+}
+
+.job-preferences-checkbox-label input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin-right: 10px;
+  cursor: pointer;
+  accent-color: #3b82f6;
+}
+
+.job-preferences-checkbox-text {
+  font-size: 15px;
+  color: #e5e7eb;
+  font-weight: 400;
+}
+
+.job-preferences-textarea-container {
+  position: relative;
+}
+
+.job-preferences-textarea {
+  width: 100%;
+  padding: 10px;
+  padding-bottom: 20px;
+  border: 2px solid #4b5563;
+  border-radius: 8px;
+  font-size: 15px;
+  color: #f3f4f6;
+  background: #374151;
+  font-family: inherit;
+  line-height: 1.5;
+  resize: none;
+  min-height: 80px;
+  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+}
+
+.job-preferences-textarea:focus {
+  outline: none;
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+}
+
+.job-preferences-textarea::placeholder {
+  color: #9ca3af;
+}
+
+.job-preferences-character-count {
+  position: absolute;
+  bottom: 8px;
+  right: 12px;
+  font-size: 12px;
+  color: #9ca3af;
+  font-weight: 500;
+  background: rgba(55, 65, 81, 0.9);
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+.form-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.submit-button {
+  width: 100%;
+  padding: 12px 24px;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.submit-button:hover {
+  background: #2563eb;
+}
+
+.submit-button:active {
+  background: #1d4ed8;
+}
+
+.clear-button {
+  width: 100%;
+  padding: 10px 24px;
+  background: #7f1d1d;
+  color: #fef2f2;
+  border: 2px solid #b91c1c;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.clear-button:hover {
+  background: #991b1b;
+  border-color: #ef4444;
+}
+
+.clear-button:active {
+  background: #dc2626;
+}
+
+@media (max-width: 600px) {
+  .job-preferences-form {
+    margin: 16px;
+    padding: 20px;
+  }
+
+  .job-preferences-pay-range-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .job-preferences-range-separator {
+    align-self: center;
+  }
+}
