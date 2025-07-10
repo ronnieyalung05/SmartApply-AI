@@ -8,7 +8,14 @@ import "./CSS/App.css";
 
 function App() {
   /* Data to be packaged and sent to the AI model */
-  const [jobDescriptions, setJobDescriptions] = useState([]);
+  const [jobDescriptions, setJobDescriptions] = useState(() => {
+    const saved = localStorage.getItem("jobDescriptions");
+    return saved ? JSON.parse(saved) : [];
+  });
+  useEffect(() => {
+    localStorage.setItem("jobDescriptions", JSON.stringify(jobDescriptions));
+  }, [jobDescriptions]);
+  
   const [preferences, setPreferences] = useState([]);
   const [resume, setResume] = useState([]);
 

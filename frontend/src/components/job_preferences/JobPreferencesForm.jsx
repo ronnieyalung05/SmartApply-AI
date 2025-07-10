@@ -1,17 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../../CSS/job_preferences/JobPreferencesForm.css";
 
 function JobPreferencesForm() {
   // Form data state variable
-  const [formData, setFormData] = useState({
-    payRange: {
-      min: "",
-      max: "",
-    },
-    workArrangement: [],
-    jobType: [],
-    otherPreferences: "",
+  const [formData, setFormData] = useState(() => {
+    const saved = localStorage.getItem("jobPreferences");
+    return saved
+      ? JSON.parse(saved)
+      : {
+          payRange: { min: "", max: "" },
+          workArrangement: [],
+          jobType: [],
+          otherPreferences: "",
+        };
   });
+
+  // Persist form data whenever it changes
+  useEffect(() => {
+    localStorage.setItem("jobPreferences", JSON.stringify(formData));
+  }, [formData]);
+
   // Error state variable
   const [errors, setErrors] = useState({});
 

@@ -101,7 +101,7 @@ function JobDescriptionList({ descriptions, onEdit, onDelete }) {
   const getDisplayText = (text, index) => {
     if (!expandedItems.has(index)) {
       // Not expanded - show truncated text (but CSS will handle line limits)
-      return text.length <= 100 ? text : text.substring(0, 100) + "...";
+      return text.length <= 1000 ? text : text.substring(0, 1000) + "...";
     } else {
       // Expanded - show full text
       return text;
@@ -110,7 +110,7 @@ function JobDescriptionList({ descriptions, onEdit, onDelete }) {
 
   // MODIFIED: Simple button logic
   const getExpandButtonInfo = (text, index) => {
-    if (text.length <= 100) {
+    if (text.length <= 1000) {
       return { show: false };
     }
 
