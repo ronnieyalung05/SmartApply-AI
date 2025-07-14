@@ -1,11 +1,9 @@
-import React, { useState, useRef } from "react";
+import React, { useRef } from "react";
 import "../../CSS/job_preferences/AddResumeButton.css";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB in bytes
 
-function AddResumeButton() {
-  // State to store the uploaded file
-  const [uploadedFile, setUploadedFile] = useState(null);
+function AddResumeButton({ resume, onChange }) {
   // Reference to the hidden file input element
   const fileInputRef = useRef(null);
 
@@ -22,21 +20,21 @@ function AddResumeButton() {
         return;
       }
 
-      setUploadedFile(file);
+      onChange(file); // Pass the file to parent component
       event.target.value = "";
     }
   };
 
   // Trigger file input click when button is pressed
   const handleButtonClick = () => {
-    if (!uploadedFile) {
+    if (!resume) {
       fileInputRef.current.click();
     }
   };
 
   // Remove/delete the uploaded file
   const handleRemoveFile = () => {
-    setUploadedFile(null);
+    onChange(null); // Pass null to parent component to clear the file
     // Clear the file input
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
@@ -76,7 +74,7 @@ function AddResumeButton() {
         style={{ display: "none" }}
       />
 
-      {!uploadedFile ? (
+      {!resume ? (
         /* Add Resume Button - shown when no file is uploaded */
         <button className="add-resume-button" onClick={handleButtonClick}>
           <span className="button-icon">📄</span>
@@ -88,16 +86,14 @@ function AddResumeButton() {
           <div className="file-info">
             <div className="file-icon">📄</div>
             <div className="file-details">
-              <div className="file-name" title={uploadedFile.name}>
-                {uploadedFile.name}
+              <div className="file-name" title={resume.name}>
+                {resume.name}
               </div>
               <div className="file-metadata">
                 <span className="file-type">
-                  {getFileTypeDisplay(uploadedFile.name)}
+                  {getFileTypeDisplay(resume.name)}
                 </span>
-                <span className="file-size">
-                  {formatFileSize(uploadedFile.size)}
-                </span>
+                <span className="file-size">{formatFileSize(resume.size)}</span>
               </div>
             </div>
           </div>

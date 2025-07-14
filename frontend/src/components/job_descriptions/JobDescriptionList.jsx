@@ -1,16 +1,15 @@
 import React, { useState } from "react";
 import "../../CSS/job_descriptions/JobDescriptionList.css";
 
-function JobDescriptionList({ descriptions, onEdit, onDelete }) {
+function JobDescriptionList({ descriptions, onEdit, onDelete, onClearAll }) {
   // State variables for opening/closing list, editing objects,
   // expanding objects, and deleting them in the list
   const [listOpen, setListOpen] = useState(false);
   const [editingIndex, setEditingIndex] = useState(null);
-  const [editText, setEditText] = useState("");
+  const [editTitle, setEditTitle] = useState("");
+  const [editDescription, setEditDescription] = useState("");
   const [expandedItems, setExpandedItems] = useState(new Set());
   const [pendingDelete, setPendingDelete] = useState(null);
-  // ADDED: State to track how many characters to show for each expanded item
-  const [expandedLengths, setExpandedLengths] = useState(new Map());
 
   // Reusable function for opening the list
   const openList = () => setListOpen(true);
@@ -19,11 +18,10 @@ function JobDescriptionList({ descriptions, onEdit, onDelete }) {
   const closeList = () => {
     setListOpen(false);
     setEditingIndex(null);
-    setEditText("");
+    setEditTitle("");
+    setEditDescription("");
     setExpandedItems(new Set());
     setPendingDelete(null);
-    // ADDED: Clear expanded lengths when closing
-    setExpandedLengths(new Map());
   };
 
   // Close list on clicking the backdrop
@@ -34,23 +32,32 @@ function JobDescriptionList({ descriptions, onEdit, onDelete }) {
   };
 
   // Edit a list object (job description)
-  const startEdit = (index, text) => {
+  const startEdit = (index, jobData) => {
     setEditingIndex(index);
-    setEditText(text);
+    setEditTitle(jobData.title || "");
+    setEditDescription(jobData.description || "");
   };
 
   // Save a list object (job description)
   const saveEdit = () => {
-    if (editText.trim() === "") return;
-    onEdit(editingIndex, editText.trim());
+    if (editDescription.trim() === "") return;
+
+    const updatedJobData = {
+      title: editTitle.trim() || "Untitled Job",
+      description: editDescription.trim(),
+    };
+
+    onEdit(editingIndex, updatedJobData);
     setEditingIndex(null);
-    setEditText("");
+    setEditTitle("");
+    setEditDescription("");
   };
 
   // Cancel editing sequence
   const cancelEdit = () => {
     setEditingIndex(null);
-    setEditText("");
+    setEditTitle("");
+    setEditDescription("");
   };
 
   // Delete a list object (job description)
@@ -85,18 +92,6 @@ function JobDescriptionList({ descriptions, onEdit, onDelete }) {
     setExpandedItems(newExpanded);
   };
 
-  // ADDED: Function to collapse an item back to original size
-  const collapseItem = (index) => {
-    const newExpanded = new Set(expandedItems);
-    const newExpandedLengths = new Map(expandedLengths);
-
-    newExpanded.delete(index);
-    newExpandedLengths.delete(index);
-
-    setExpandedItems(newExpanded);
-    setExpandedLengths(newExpandedLengths);
-  };
-
   // MODIFIED: Show full text when expanded, truncated when collapsed
   const getDisplayText = (text, index) => {
     if (!expandedItems.has(index)) {
@@ -118,6 +113,23 @@ function JobDescriptionList({ descriptions, onEdit, onDelete }) {
       return { show: true, text: "⬇", isExpand: true };
     } else {
       return { show: true, text: "⬆", isExpand: false };
+    }
+  };
+
+  // Helper function to get job data (handles both old string format and new object format)
+  const getJobData = (description) => {
+    if (typeof description === "string") { // TODO: Remove handling old format
+      // Handle old format (just description string)
+      return {
+        title: "Untitled Job",
+        description: description,
+      };
+    } else {
+      // Handle new format (object with title and description)
+      return {
+        title: description.title || "Untitled Job",
+        description: description.description || "",
+      };
     }
   };
 
@@ -153,103 +165,129 @@ function JobDescriptionList({ descriptions, onEdit, onDelete }) {
               ) : (
                 /* Container for all job description rows */
                 <div className="description-list-table">
-                  {descriptions.map((description, index) => (
-                    /* Individual job description row */
-                    <div key={index} className="description-list-row">
-                      {/* Main content area of each row */}
-                      <div className="description-list-item-content">
-                        {editingIndex === index ? (
-                          /* Edit mode container */
-                          <div className="edit-description-container">
-                            <textarea
-                              value={editText}
-                              onChange={(e) => setEditText(e.target.value)}
-                              className="edit-description-textarea"
-                              autoFocus
-                            />
-                            <div className="edit-description-actions">
-                              <button
-                                onClick={saveEdit}
-                                className="description-save-btn"
-                              >
-                                Save
-                              </button>
-                              <button
-                                onClick={cancelEdit}
-                                className="description-cancel-btn"
-                              >
-                                Cancel
-                              </button>
-                            </div>
-                          </div>
-                        ) : (
-                          /* Display mode container */
-                          <div className="description-display-container">
-                            {/* MODIFIED: Changed structure to stack text and buttons vertically */}
-                            <div className="description-text-wrapper">
-                              <p
-                                className={`description-text ${
-                                  expandedItems.has(index)
-                                    ? "fully-expanded"
-                                    : ""
-                                }`}
-                              >
-                                {getDisplayText(description, index)}
-                              </p>
-                              {/* MODIFIED: Buttons now positioned at bottom of text container */}
-                              <div className="description-buttons">
-                                {(() => {
-                                  const buttonInfo = getExpandButtonInfo(
-                                    description,
-                                    index
-                                  );
-                                  if (!buttonInfo.show) return null;
+                  {descriptions.map((description, index) => {
+                    const jobData = getJobData(description);
 
-                                  return (
-                                    <div className="expand-collapse-buttons">
-                                      <button
-                                        onClick={() => toggleExpanded(index)}
-                                        className="description-expand-button"
-                                      >
-                                        {buttonInfo.text}
-                                      </button>
-                                      {/* REMOVED: Separate collapse button no longer needed */}
-                                    </div>
-                                  );
-                                })()}
+                    return (
+                      /* Individual job description row */
+                      <div key={index} className="description-list-row">
+                        {/* Main content area of each row */}
+                        <div className="description-list-item-content">
+                          {editingIndex === index ? (
+                            /* Edit mode container */
+                            <div className="edit-description-container">
+                              <input
+                                type="text"
+                                value={editTitle}
+                                onChange={(e) => setEditTitle(e.target.value)}
+                                className="edit-title-input"
+                                placeholder="Job title..."
+                              />
+                              <textarea
+                                value={editDescription}
+                                onChange={(e) =>
+                                  setEditDescription(e.target.value)
+                                }
+                                className="edit-description-textarea"
+                                placeholder="Job description..."
+                                autoFocus
+                              />
+                              <div className="edit-description-actions">
+                                <button
+                                  onClick={saveEdit}
+                                  className="description-save-btn"
+                                >
+                                  Save
+                                </button>
+                                <button
+                                  onClick={cancelEdit}
+                                  className="description-cancel-btn"
+                                >
+                                  Cancel
+                                </button>
                               </div>
                             </div>
-                          </div>
-                        )}
-                      </div>
+                          ) : (
+                            /* Display mode container */
+                            <div className="description-display-container">
+                              {/* MODIFIED: Changed structure to stack title, text and buttons vertically */}
+                              <div className="description-content-wrapper">
+                                <h4 className="job-title">{jobData.title}</h4>
+                                <div className="description-text-wrapper">
+                                  <p
+                                    className={`description-text ${
+                                      expandedItems.has(index)
+                                        ? "fully-expanded"
+                                        : ""
+                                    }`}
+                                  >
+                                    {getDisplayText(jobData.description, index)}
+                                  </p>
+                                  {/* MODIFIED: Buttons now positioned at bottom of text container */}
+                                  <div className="description-buttons">
+                                    {(() => {
+                                      const buttonInfo = getExpandButtonInfo(
+                                        jobData.description,
+                                        index
+                                      );
+                                      if (!buttonInfo.show) return null;
 
-                      {/* Action buttons for each row */}
-                      <div className="description-row-actions">
-                        <button
-                          onClick={() => startEdit(index, description)}
-                          className="description-edit-btn"
-                          disabled={editingIndex !== null}
-                        >
-                          Edit
-                        </button>
-                        <button
-                          onClick={() => handleDelete(index)}
-                          className={`description-delete-btn ${
-                            pendingDelete === index ? "pending" : ""
-                          }`}
-                          disabled={editingIndex !== null}
-                        >
-                          {pendingDelete === index ? "Confirm?" : "Delete"}
-                        </button>
+                                      return (
+                                        <div className="expand-collapse-buttons">
+                                          <button
+                                            onClick={() =>
+                                              toggleExpanded(index)
+                                            }
+                                            className="description-expand-button"
+                                          >
+                                            {buttonInfo.text}
+                                          </button>
+                                          {/* REMOVED: Separate collapse button no longer needed */}
+                                        </div>
+                                      );
+                                    })()}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Action buttons for each row */}
+                        <div className="description-row-actions">
+                          <button
+                            onClick={() => startEdit(index, jobData)}
+                            className="description-edit-btn"
+                            disabled={editingIndex !== null}
+                          >
+                            Edit
+                          </button>
+                          <button
+                            onClick={() => handleDelete(index)}
+                            className={`description-delete-btn ${
+                              pendingDelete === index ? "pending" : ""
+                            }`}
+                            disabled={editingIndex !== null}
+                          >
+                            {pendingDelete === index ? "Confirm?" : "Delete"}
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </div>
 
             {/* Modal footer with Done button */}
             <div className="description-list-footer">
+              <button
+                onClick={onClearAll}
+                className="description-clear-all-button"
+                disabled={descriptions.length === 0}
+              >
+                Clear All
+              </button>
               <button onClick={closeList} className="description-done-button">
                 Done
               </button>

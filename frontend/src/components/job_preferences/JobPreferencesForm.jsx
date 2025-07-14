@@ -1,25 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "../../CSS/job_preferences/JobPreferencesForm.css";
 
-function JobPreferencesForm() {
-  // Form data state variable
-  const [formData, setFormData] = useState(() => {
-    const saved = localStorage.getItem("jobPreferences");
-    return saved
-      ? JSON.parse(saved)
-      : {
-          payRange: { min: "", max: "" },
-          workArrangement: [],
-          jobType: [],
-          otherPreferences: "",
-        };
-  });
-
-  // Persist form data whenever it changes
-  useEffect(() => {
-    localStorage.setItem("jobPreferences", JSON.stringify(formData));
-  }, [formData]);
-
+function JobPreferencesForm({ preferences, onChange }) {
   // Error state variable
   const [errors, setErrors] = useState({});
 
@@ -30,7 +12,7 @@ function JobPreferencesForm() {
   const handlePayRangeChange = (field, value) => {
     // Only allow numeric values up to 7 digits
     if (value === "" || /^\d{1,7}$/.test(value)) {
-      const newPayRange = { ...formData.payRange, [field]: value };
+      const newPayRange = { ...preferences.payRange, [field]: value };
 
       const minVal = parseInt(newPayRange.min) || 0;
       const maxVal = parseInt(newPayRange.max) || Infinity;
@@ -48,28 +30,28 @@ function JobPreferencesForm() {
       }
 
       setErrors(newErrors);
-      setFormData((prev) => ({
-        ...prev,
+      onChange({
+        ...preferences,
         payRange: newPayRange,
-      }));
+      });
     }
   };
 
   const handleMultiSelect = (field, value) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: prev[field].includes(value)
-        ? prev[field].filter((item) => item !== value)
-        : [...prev[field], value],
-    }));
+    onChange({
+      ...preferences,
+      [field]: preferences[field].includes(value)
+        ? preferences[field].filter((item) => item !== value)
+        : [...preferences[field], value],
+    });
   };
 
   const handleOtherPreferencesChange = (value) => {
     if (value.length <= maxCharacters) {
-      setFormData((prev) => ({
-        ...prev,
+      onChange({
+        ...preferences,
         otherPreferences: value,
-      }));
+      });
     }
   };
 
@@ -85,12 +67,16 @@ function JobPreferencesForm() {
     // Format data for API consumption
     const submissionData = {
       payRange: {
-        min: formData.payRange.min ? parseInt(formData.payRange.min) : null,
-        max: formData.payRange.max ? parseInt(formData.payRange.max) : null,
+        min: preferences.payRange.min
+          ? parseInt(preferences.payRange.min)
+          : null,
+        max: preferences.payRange.max
+          ? parseInt(preferences.payRange.max)
+          : null,
       },
-      workArrangement: formData.workArrangement,
-      jobType: formData.jobType,
-      otherPreferences: formData.otherPreferences.trim(),
+      workArrangement: preferences.workArrangement,
+      jobType: preferences.jobType,
+      otherPreferences: preferences.otherPreferences.trim(),
     };
 
     // This is where you would send the data to your API
@@ -102,7 +88,7 @@ function JobPreferencesForm() {
   };
 
   const handleClear = () => {
-    setFormData({
+    onChange({
       payRange: { min: "", max: "" },
       workArrangement: [],
       jobType: [],
@@ -126,7 +112,7 @@ function JobPreferencesForm() {
               <input
                 type="text"
                 placeholder="Min"
-                value={formData.payRange.min}
+                value={preferences.payRange.min}
                 onChange={(e) => handlePayRangeChange("min", e.target.value)}
                 className="pay-input"
               />
@@ -137,7 +123,7 @@ function JobPreferencesForm() {
               <input
                 type="text"
                 placeholder="Max"
-                value={formData.payRange.max}
+                value={preferences.payRange.max}
                 onChange={(e) => handlePayRangeChange("max", e.target.value)}
                 className="pay-input"
               />
@@ -160,7 +146,7 @@ function JobPreferencesForm() {
               <label key={option} className="job-preferences-checkbox-label">
                 <input
                   type="checkbox"
-                  checked={formData.workArrangement.includes(option)}
+                  checked={preferences.workArrangement.includes(option)}
                   onChange={() => handleMultiSelect("workArrangement", option)}
                 />
                 <span className="job-preferences-checkbox-text">{option}</span>
@@ -177,7 +163,7 @@ function JobPreferencesForm() {
               <label key={option} className="job-preferences-checkbox-label">
                 <input
                   type="checkbox"
-                  checked={formData.jobType.includes(option)}
+                  checked={preferences.jobType.includes(option)}
                   onChange={() => handleMultiSelect("jobType", option)}
                 />
                 <span className="job-preferences-checkbox-text">{option}</span>
@@ -194,13 +180,13 @@ function JobPreferencesForm() {
           <div className="job-preferences-textarea-container">
             <textarea
               placeholder="Any other preferences or requirements..."
-              value={formData.otherPreferences}
+              value={preferences.otherPreferences}
               onChange={(e) => handleOtherPreferencesChange(e.target.value)}
               className="job-preferences-textarea"
               rows="3"
             />
             <div className="job-preferences-character-count">
-              {formData.otherPreferences.length}/{maxCharacters}
+              {preferences.otherPreferences.length}/{maxCharacters}
             </div>
           </div>
         </div>

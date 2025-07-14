@@ -4,10 +4,12 @@ import HelpModal from "./components/HelpModal";
 import JobDescriptionForm from "./components/job_descriptions/JobDescriptionForm";
 import JobDescriptionList from "./components/job_descriptions/JobDescriptionList";
 import AddResumeButton from "./components/job_preferences/AddResumeButton";
+import AnalyzeJobsButton from "./components/analyzed_jobs/AnalyzeJobsButton";
+import ViewAnalyzedJobs from "./components/analyzed_jobs/ViewAnalyzedJobsButton";
 import "./CSS/App.css";
 
 function App() {
-  /* Data to be packaged and sent to the AI model */
+  // Job Description Data and Functions
   const [jobDescriptions, setJobDescriptions] = useState(() => {
     const saved = localStorage.getItem("jobDescriptions");
     return saved ? JSON.parse(saved) : [];
@@ -15,11 +17,60 @@ function App() {
   useEffect(() => {
     localStorage.setItem("jobDescriptions", JSON.stringify(jobDescriptions));
   }, [jobDescriptions]);
-  
-  const [preferences, setPreferences] = useState([]);
-  const [resume, setResume] = useState([]);
 
-  /* ----Functionality to warn for page refreshes/resets---- */
+  // Functionality to handle job descriptions in the list
+  const handleAddDescription = (newDescription) => {
+    setJobDescriptions((prev) => [...prev, newDescription]);
+  };
+
+  const handleEditDescription = (index, updatedJob) => {
+    setJobDescriptions((prev) => {
+      const updated = [...prev];
+      updated[index] = updatedJob;
+      return updated;
+    });
+  };
+
+  const handleDeleteDescription = (index) => {
+    setJobDescriptions((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const handleClearAllDescriptions = () => {
+    if (
+      window.confirm("Are you sure you want to delete all job descriptions?") // TODO: change to popup element rather than window confirm
+    ) {
+      setJobDescriptions([]);
+    }
+  };
+
+  // Job Preference Data and Functions
+  const [preferences, setPreferences] = useState(() => {
+    const saved = localStorage.getItem("jobPreferences");
+    return saved
+      ? JSON.parse(saved)
+      : {
+          payRange: { min: "", max: "" },
+          workArrangement: [],
+          jobType: [],
+          otherPreferences: "",
+        };
+  });
+  useEffect(() => {
+    localStorage.setItem("jobPreferences", JSON.stringify(preferences));
+  }, [preferences]);
+  const [resume, setResume] = useState(null); // Null since it's a single file
+
+  // Functionality to handle preference changes
+  const handlePreferencesChange = (newPreferences) => {
+    setPreferences(newPreferences);
+  };
+
+  // Resume Data and Handling
+  const handleResumeChange = (file) => {
+    setResume(file);
+  };
+
+  // ----Functionality to warn for page refreshes/resets
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(true); // set to true to always warn
 
   useEffect(() => {
@@ -35,25 +86,18 @@ function App() {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, [hasUnsavedChanges]);
-  /* --------------------END-------------------- */
 
-  /* ----Functionality to handle adding job descriptions---- */
-  const handleAddDescription = (newDescription) => {
-    setJobDescriptions((prev) => [...prev, newDescription]);
+  // Analysis Results State - now stores array of job analysis objects
+  const [analysisResult, setAnalysisResult] = useState([]);
+
+  const handleAnalysisComplete = (result) => {
+    // result is now an array of objects with structure:
+    // [{ aiResponse: string, title: string, description: string, error?: string }]
+    setAnalysisResult(result);
+    console.log("Analysis completed:", result);
   };
 
-  const handleEditDescription = (index, newText) => {
-    setJobDescriptions((prev) => {
-      const updated = [...prev];
-      updated[index] = newText;
-      return updated;
-    });
-  };
-
-  const handleDeleteDescription = (index) => {
-    setJobDescriptions((prev) => prev.filter((_, i) => i !== index));
-  };
-  /* --------------------END-------------------- */
+  /* END */
 
   return (
     <div id="app-container">
@@ -66,8 +110,16 @@ function App() {
 
       <div id="app-layout">
         <div id="preferences-section">
-          <JobPreferencesForm id="preferences-form" />
-          <AddResumeButton id="add-resume-button" />
+          <JobPreferencesForm
+            id="preferences-form"
+            preferences={preferences}
+            onChange={handlePreferencesChange}
+          />
+          <AddResumeButton
+            id="add-resume-button"
+            resume={resume}
+            onChange={handleResumeChange}
+          />
         </div>
 
         <div id="descriptions-section">
@@ -82,11 +134,22 @@ function App() {
 
         <div id="functions-section">
           <JobDescriptionList
-              id="description-list"
-              descriptions={jobDescriptions}
-              onEdit={handleEditDescription}
-              onDelete={handleDeleteDescription}
-            />
+            id="description-list"
+            descriptions={jobDescriptions}
+            onEdit={handleEditDescription}
+            onDelete={handleDeleteDescription}
+            onClearAll={handleClearAllDescriptions}
+          />
+          {/* Updated AnalyzeJobsButton with onAnalysisComplete callback */}
+          <AnalyzeJobsButton
+            preferences={preferences}
+            resume={resume}
+            jobDescriptions={jobDescriptions}
+            onAnalysisComplete={handleAnalysisComplete}
+          />
+
+          {/* Updated ViewAnalyzedJobs component to handle array structure */}
+          <ViewAnalyzedJobs analysisResult={analysisResult} />
         </div>
       </div>
     </div>

@@ -111,11 +111,6 @@
   min-height: fit-content;
 }
 
-/* .description-list-row:hover {
-  background: #4b5563;
-  border-color: #6b7280;
-} */
-
 /* Main content area of each row */
 .description-list-item-content {
   flex: 1;
@@ -125,12 +120,35 @@
 /* Edit mode container */
 .edit-description-container {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* NEW: Edit mode title input */
+.edit-title-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #4b5563;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: inherit;
+  box-sizing: border-box;
+  background: #1f2937;
+  color: #f9fafb;
+}
+
+.edit-title-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 /* Edit mode textarea - made larger as requested */
 .edit-description-textarea {
   width: 100%;
-  min-height: 150px;
+  min-height: 120px;
   padding: 12px;
   border: 1px solid #4b5563;
   border-radius: 6px;
@@ -138,7 +156,6 @@
   font-family: inherit;
   resize: vertical;
   box-sizing: border-box;
-  margin-bottom: 12px;
   background: #1f2937;
   color: #f9fafb;
   line-height: 1.5;
@@ -189,6 +206,24 @@
 /* Display mode container */
 .description-display-container {
   width: 100%;
+}
+
+/* NEW: Container for job title and description content */
+.description-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+/* NEW: Job title styling */
+.job-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #f9fafb;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #4b5563;
 }
 
 /* MODIFIED: Changed to flex column to stack text and buttons vertically */
@@ -411,4 +446,25 @@
   .description-buttons {
     justify-content: flex-start;
   }
+}
+
+.description-clear-all-button {
+  padding: 10px 24px;
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.description-clear-all-button:hover {
+  background: #dc2626;
+}
+
+.description-clear-all-button:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
 }
