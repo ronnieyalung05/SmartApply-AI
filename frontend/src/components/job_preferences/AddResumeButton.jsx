@@ -7,8 +7,8 @@ function AddResumeButton({ resume, onChange }) {
   // Reference to the hidden file input element
   const fileInputRef = useRef(null);
 
-  // MODIFY: Add or remove accepted file types here
-  const acceptedFileTypes = ".pdf,.doc,.docx,.txt,.rtf";
+  // TODO: Add or remove accepted file types here
+  const acceptedFileTypes = ".pdf,.doc,.docx,.txt";
 
   // Handle file selection
   const handleFileSelect = (event) => {
@@ -58,7 +58,6 @@ function AddResumeButton({ resume, onChange }) {
       doc: "Word Document",
       docx: "Word Document",
       txt: "Text File",
-      rtf: "Rich Text Format",
     };
     return typeMap[extension] || extension.toUpperCase();
   };
