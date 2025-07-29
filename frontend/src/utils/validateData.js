@@ -5,19 +5,25 @@ export function validateData(preferences, resume, jobDescriptions) {
 
   try {
     if (!preferences || typeof preferences !== "object") {
-      throw new Error("Invalid preferences data");
+      throw new Error("Invalid preferences data (validateData.js)");
     }
 
     if (!Array.isArray(jobDescriptions)) {
-      throw new Error("Invalid job descriptions data");
+      throw new Error("Invalid job descriptions data (validateData.js)");
     }
 
     if (!resume || !(resume instanceof File)) {
-      return { isValid: false, message: "Please upload a valid resume." };
+      return {
+        isValid: false,
+        message: "Please upload a valid resume. (validateData.js)",
+      };
     }
 
     if (resume.size > MAX_FILE_SIZE) {
-      return { isValid: false, message: "Resume file is too large (max 5MB)." };
+      return {
+        isValid: false,
+        message: "Resume file is too large (max 5MB). (validateData.js)",
+      };
     }
 
     const allowedTypes = [
@@ -57,6 +63,6 @@ export function validateData(preferences, resume, jobDescriptions) {
 
     return { isValid: true };
   } catch (err) {
-    return { isValid: false, message: `Validation error: ${err.message}` };
+    return { isValid: false, message: `Validation error (validateData.js): ${err.message}` };
   }
 }

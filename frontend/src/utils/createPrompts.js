@@ -1,3 +1,4 @@
+// TODO: generate an actual prompt, and force the model to use a template
 export function createPrompts(resumeText, preferences, jobDescriptions) {
   return jobDescriptions.map((job, index) => {
     const prompt = `Please analyze the following job description against my resume and preferences:

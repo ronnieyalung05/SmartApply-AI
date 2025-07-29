@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../../CSS/job_descriptions/JobDescriptionList.css";
-
+// TODO: make JobDescriptionItem.jsx
 function JobDescriptionList({ descriptions, onEdit, onDelete, onClearAll }) {
   // State variables for opening/closing list, editing objects,
   // expanding objects, and deleting them in the list

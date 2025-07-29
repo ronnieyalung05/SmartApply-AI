@@ -1,3 +1,4 @@
+// TODO: refactor this code
 import React, { useState } from "react";
 import "../../CSS/analyzed_jobs/ViewAnalyzedJobsButton.css";
 

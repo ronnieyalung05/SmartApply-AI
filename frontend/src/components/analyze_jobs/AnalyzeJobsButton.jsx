@@ -4,7 +4,7 @@ import { validateData } from "../../utils/validateData";
 import { parseResume } from "../../utils/parseResume";
 import { createPrompts } from "../../utils/createPrompts";
 import { sendJobAnalysis } from "../../api/analyzeJobs";
-
+// TODO: add a loading bar/spinning circle for UX
 function AnalyzeJobsButton({
   preferences,
   resume,

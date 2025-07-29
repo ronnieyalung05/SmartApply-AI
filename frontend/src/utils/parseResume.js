@@ -1,3 +1,4 @@
+// TODO: this needs to be an actual resume parse based on file type. also try catch block
 export async function parseResume(resumeFile) {
   if (resumeFile.type === "text/plain") {
     return new Promise((resolve, reject) => {

@@ -12,7 +12,7 @@ import JobDescriptionForm from "./components/job_descriptions/JobDescriptionForm
 import JobDescriptionList from "./components/job_descriptions/JobDescriptionList";
 import AddResumeButton from "./components/job_preferences/AddResumeButton";
 import AnalyzeJobsButton from "./components/analyze_jobs/AnalyzeJobsButton";
-import ViewAnalyzedJobs from "./components/analyzed_jobs/ViewAnalyzedJobsButton";
+import ViewAnalyzedJobs from "./components/analyze_jobs/ViewAnalyzedJobsButton";
 
 import "./CSS/App.css";
 

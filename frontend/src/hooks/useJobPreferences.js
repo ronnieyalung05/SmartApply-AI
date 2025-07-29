@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+// TODO: try catch block ...?
 export default function useJobPreferences() {
   const [preferences, setPreferences] = useState(() => {
     const saved = localStorage.getItem("jobPreferences");

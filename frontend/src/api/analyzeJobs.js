@@ -1,5 +1,5 @@
 const BACKEND_URL = import.meta.env.VITE_BACKEND_SERVER || "/generate";
-
+// TODO: try catch block
 export async function sendJobAnalysis(prompt) {
   const res = await fetch(BACKEND_URL, {
     method: "POST",
@@ -9,7 +9,7 @@ export async function sendJobAnalysis(prompt) {
 
   const data = await res.json();
   if (!res.ok) {
-    throw new Error(data.error || "Unknown backend error");
+    throw new Error(data.error || "Unknown backend error (analyzeJobs.js)");
   }
 
   return data.response;

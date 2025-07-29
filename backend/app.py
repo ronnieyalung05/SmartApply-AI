@@ -46,7 +46,7 @@ def generate():
         ai_text = result["choices"][0]["message"]["content"]
         return jsonify({"response": ai_text})
     else:
-        return jsonify({"error": f"OpenRouter API error: {response.text}"}), 500
+        return jsonify({"error": f"OpenRouter API error (app.py): {response.text}"}), 500
 
 
 if __name__ == '__main__':
