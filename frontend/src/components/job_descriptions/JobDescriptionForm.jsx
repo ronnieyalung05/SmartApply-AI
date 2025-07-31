@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../../CSS/job_descriptions/JobDescriptionForm.css";
+import "../../styles/job_descriptions/JobDescriptionForm.css";
 
 function JobDescriptionForm({ onAdd }) {
   // State variables for textboxes

@@ -1,4 +1,6 @@
-const BACKEND_URL = import.meta.env.VITE_BACKEND_SERVER || "/generate";
+const BACKEND_URL =
+  import.meta.env.VITE_BACKEND_SERVER || "http://localhost:5000/generate";
+
 // TODO: try catch block
 export async function sendJobAnalysis(prompt) {
   const res = await fetch(BACKEND_URL, {

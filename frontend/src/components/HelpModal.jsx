@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "../CSS/HelpModal.css";
+import "../styles/HelpModal.css";
 
 function HelpModal() {
   // State variables for opening the modal and navigating between "about" and "guide" sections in the modal

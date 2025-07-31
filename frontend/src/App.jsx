@@ -14,7 +14,7 @@ import AddResumeButton from "./components/job_preferences/AddResumeButton";
 import AnalyzeJobsButton from "./components/analyze_jobs/AnalyzeJobsButton";
 import ViewAnalyzedJobs from "./components/analyze_jobs/ViewAnalyzedJobsButton";
 
-import "./CSS/App.css";
+import "./styles/App.css";
 
 function App() {
   const {

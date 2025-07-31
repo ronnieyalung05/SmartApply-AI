@@ -1,6 +1,6 @@
 // TODO: refactor this code
 import React, { useState } from "react";
-import "../../CSS/analyzed_jobs/ViewAnalyzedJobsButton.css";
+import "../../styles/analyze_jobs/ViewAnalyzedJobsButton.css";
 
 function ViewAnalyzedJobs({ analysisResult }) {
   const [listOpen, setListOpen] = useState(false);
